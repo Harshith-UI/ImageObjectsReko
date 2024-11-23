@@ -38,12 +38,13 @@ body {
   border: 2px solid #fff;
   border-radius: 8px;
   background: transparent;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .custom-file-upload:hover {
   transform: translateY(-10px);
   box-shadow: 0px 8px 20px rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 #upload-button {
@@ -55,12 +56,13 @@ body {
   background: #ff7b54;
   color: #fff;
   margin-top: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 #upload-button:hover {
   transform: translateY(-10px);
   box-shadow: 0px 8px 20px rgba(255, 123, 84, 0.6);
+  background-color: rgba(255, 123, 84, 0.8);
 }
 
 /* Result Section */
@@ -74,11 +76,13 @@ body {
   margin: 20px auto;
   border-radius: 12px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  display: block; /* Ensures visibility */
 }
 
 #uploaded-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 8px 20px rgba(255, 255, 255, 0.6);
+  transform: scale(1.05) translateZ(10px);
+  box-shadow: 0px 12px 30px rgba(255, 255, 255, 0.6);
 }
 
 /* Labels List */
@@ -95,7 +99,7 @@ body {
 .label-item {
   padding: 8px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .label-item:last-child {
@@ -103,7 +107,8 @@ body {
 }
 
 .label-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.03);
   box-shadow: 0px 8px 20px rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
