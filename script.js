@@ -1,28 +1,27 @@
-// Replace this with your actual API Gateway invoke URL
 const API_URL = "https://xm5ucab960.execute-api.us-east-1.amazonaws.com/prod/upload";
-document.getElementById("imageUploadForm").addEventListener("submit", async (event) => {
-  event.preventDefault(); // Prevent form submission
-  const fileInput = document.getElementById("imageInput");
-  const errorDiv = document.getElementById("error");
-  const resultDiv = document.getElementById("result");
 
-  // Clear previous messages
-  errorDiv.textContent = "";
-  resultDiv.textContent = "";
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  const fileInput = document.getElementById("fileInput");
+  const responseContainer = document.getElementById("responseData");
+  const uploadedImage = document.getElementById("uploadedImage");
 
-  if (!fileInput.files.length) {
-    errorDiv.textContent = "Please select an image to upload.";
+  // Clear previous responses
+  responseContainer.innerHTML = "";
+  uploadedImage.src = "";
+
+  if (fileInput.files.length === 0) {
+    alert("Please select an image file.");
     return;
   }
 
   const file = fileInput.files[0];
   const reader = new FileReader();
 
-  reader.onloadend = async () => {
-    const base64Image = reader.result.split(",")[1]; // Extract Base64 data
+  reader.onload = async () => {
+    const base64Image = reader.result.split(",")[1]; // Extract the base64 string
+    uploadedImage.src = reader.result; // Show image preview
 
     try {
-      // Make POST request to API
       const response = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -35,25 +34,23 @@ document.getElementById("imageUploadForm").addEventListener("submit", async (eve
       });
 
       if (!response.ok) {
-        throw new Error("Failed to upload image");
+        throw new Error(`API Error: ${response.statusText}`);
       }
 
       const data = await response.json();
-
-      // Display detected labels
       const labels = JSON.parse(data.body).labels;
-      resultDiv.textContent = "Detected Labels:";
+
+      // Populate response
       labels.forEach((label) => {
-        const p = document.createElement("p");
-        p.textContent = `${label.Name}: ${label.Confidence}%`;
-        resultDiv.appendChild(p);
+        const listItem = document.createElement("li");
+        listItem.textContent = `${label.Name} (${label.Confidence}%)`;
+        responseContainer.appendChild(listItem);
       });
     } catch (error) {
       console.error("Error:", error);
-      errorDiv.textContent = "An error occurred: " + error.message;
+      alert("An error occurred while processing the image.");
     }
   };
 
   reader.readAsDataURL(file);
 });
-
