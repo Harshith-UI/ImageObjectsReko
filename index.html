@@ -1,20 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Upload</title>
+  <title>Image Recognition</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
     <h1>Image Recognition</h1>
-    <form id="uploadForm">
-      <input type="file" id="fileInput" accept="image/*" />
+    <form id="imageUploadForm">
+      <input type="file" id="imageInput" accept="image/*" />
       <button type="submit">Upload Image</button>
     </form>
     <div id="result"></div>
+    <div id="error" class="error"></div>
   </div>
   <script src="script.js"></script>
 </body>
