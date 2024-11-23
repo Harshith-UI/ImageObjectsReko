@@ -1,56 +1,119 @@
 const API_URL = "https://xm5ucab960.execute-api.us-east-1.amazonaws.com/prod/upload";
 
-document.getElementById("uploadBtn").addEventListener("click", async () => {
-  const fileInput = document.getElementById("fileInput");
-  const responseContainer = document.getElementById("responseData");
-  const uploadedImage = document.getElementById("uploadedImage");
+function handleFileUpload(event) {
+  const fileInput = event.target;
+  const file = fileInput.files[0];
+  if (!file) return;
 
-  // Clear previous responses
-  responseContainer.innerHTML = "";
-  uploadedImage.src = "";
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const imageContainer = document.getElementById("uploaded-image");
+    imageContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image" style="max-width: 100%; max-height: 300px; border-radius: 10px;"/>`;
+  };
+  reader.readAsDataURL(file);
+}
 
-  if (fileInput.files.length === 0) {
-    alert("Please select an image file.");
+function uploadImage() {
+  const fileInput = document.getElementById("file-input");
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please select an image to upload.");
     return;
   }
 
-  const file = fileInput.files[0];
   const reader = new FileReader();
+  reader.onload = function (e) {
+    const base64Image = e.target.result.split(",")[1]; // Extract base64 data
+    const payload = {
+      body: base64Image,
+      isBase64Encoded: true,
+    };
 
-  reader.onload = async () => {
-    const base64Image = reader.result.split(",")[1]; // Extract the base64 string
-    uploadedImage.src = reader.result; // Show image preview
-
-    try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          body: base64Image,
-          isBase64Encoded: true,
-        }),
+    fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error in API request");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const resultContainer = document.getElementById("result");
+        const labels = JSON.parse(data.body).labels;
+        resultContainer.innerHTML =
+          `<h3>Detected Items:</h3><ul>` +
+          labels.map((label) => `<li>${label.Name}: ${label.Confidence}%</li>`).join("") +
+          `</ul>`;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while uploading the image.");
       });
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const labels = JSON.parse(data.body).labels;
-
-      // Populate response
-      labels.forEach((label) => {
-        const listItem = document.createElement("li");
-        listItem.textContent = `${label.Name} (${label.Confidence}%)`;
-        responseContainer.appendChild(listItem);
-      });
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred while processing the image.");
-    }
   };
-
   reader.readAsDataURL(file);
-});
+}
+const API_URL = "https://xm5ucab960.execute-api.us-east-1.amazonaws.com/prod/upload";
+
+function handleFileUpload(event) {
+  const fileInput = event.target;
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const imageContainer = document.getElementById("uploaded-image");
+    imageContainer.innerHTML = `<img src="${e.target.result}" alt="Uploaded Image" style="max-width: 100%; max-height: 300px; border-radius: 10px;"/>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function uploadImage() {
+  const fileInput = document.getElementById("file-input");
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please select an image to upload.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    const base64Image = e.target.result.split(",")[1]; // Extract base64 data
+    const payload = {
+      body: base64Image,
+      isBase64Encoded: true,
+    };
+
+    fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error in API request");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const resultContainer = document.getElementById("result");
+        const labels = JSON.parse(data.body).labels;
+        resultContainer.innerHTML =
+          `<h3>Detected Items:</h3><ul>` +
+          labels.map((label) => `<li>${label.Name}: ${label.Confidence}%</li>`).join("") +
+          `</ul>`;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while uploading the image.");
+      });
+  };
+  reader.readAsDataURL(file);
+}
+
