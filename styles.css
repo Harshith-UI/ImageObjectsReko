@@ -1,25 +1,12 @@
-
 body {
   font-family: Arial, sans-serif;
+  text-align: center;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9;
 }
 
 .container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-h1 {
-  margin-bottom: 20px;
+  margin-top: 50px;
 }
 
 input[type="file"] {
@@ -27,11 +14,10 @@ input[type="file"] {
 }
 
 button {
-  background-color: #4CAF50;
+  padding: 10px 20px;
+  background-color: #4caf50;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -41,4 +27,11 @@ button:hover {
 
 #result {
   margin-top: 20px;
+  font-weight: bold;
+}
+
+.error {
+  margin-top: 20px;
+  color: red;
+  font-weight: bold;
 }
